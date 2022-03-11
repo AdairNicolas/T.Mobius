@@ -135,6 +135,29 @@ def sistemadeecuaciones(p1r,p1i,p2r,p2i,p3r,p3i):
     rn = pow(pow(p1r-hn,2)+ pow(p1i-kn,2),0.5)
     return hn,kn,rn
 
+def graficar(h,k,r,x1,y1,x2,y2,x3,y3,tit):
+    fig,axes = plt.subplots()
+    draw_circle = plt.Circle((h,k),r, fill=False)
+
+    xmin = h-r
+    xmax = h+r
+    ymin = k-r
+    ymax = k+r
+
+    plt.title(tit)
+    plt.axis([xmin-5,xmax+5,ymin-5,ymax+5])
+
+    plt.scatter(h,k,color="green")
+    plt.scatter(x1,y1, color = "blue")
+    plt.scatter(x2,y2, color = "blue")
+    plt.scatter(x3,y3, color = "blue")
+
+    axes.set_aspect(1)
+    axes.add_artist(draw_circle)
+
+    plt.grid()
+    plt.show()
+
 print("Bienvenido al programa sobre las transformacxiones de Mobius\n")
 
 z1=input("Ingresa el primer numero complejo: ")
@@ -166,16 +189,5 @@ h2,k2,r2 = sistemadeecuaciones(p1r,p1i,p2r,p2i,p3r,p3i)
 
 print(f"(x-{h2})^2+(y-{k2})^2={r2}^2")
 
-
-circunoriginal = plt.Circle((h,k),r,color='b',fill=False)
-circuntransfor = plt.Circle((h2,k2),r2,color='r',fill=False)
-
-fig,ax = plt.subplots()
-
-ax.set_xlim((-60,40))
-ax.set_ylim((-20,80))
-
-ax.add_patch(circunoriginal)
-ax.add_patch(circuntransfor)
-
-fig.savefig('Circulos.png')
+graficar(h,k,r,x1,y1,x2,y2,x3,y3,'Original')
+graficar(h2,k2,r2,p1r,p1i,p2r,p2i,p3r,p3i,'Transformada')
