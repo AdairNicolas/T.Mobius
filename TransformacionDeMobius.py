@@ -55,16 +55,16 @@ def division(a,b,a2,b2):
 def valoresc (cir):
     tip = cir[0:1]
     if(tip == "("):
-        hlim = cir.find("-")
+        hlim = cir.find("x")
         hfin = cir.find(")")
         hp = cir[hlim+1:hfin]
-        klim = cir.find("-",hfin)
+        klim = cir.find("y",hfin)
         kfin = cir.find(")",klim)
         kp = cir[klim+1:kfin]
         rlim = cir.find("=",kfin)
         rp = cir[rlim+1:]
-        h = float(hp)
-        k = float(kp)
+        h = -1*float(hp)
+        k = -1*float(kp)
         rpp = float(rp)
         r = pow(rpp,0.5)
         print(h)
@@ -75,7 +75,7 @@ def valoresc (cir):
     elif(tip!="("):
         lima = cir.find("(")
         AS = cir[0:lima]
-        limfa = cir.find(")",lima)
+        limfa = cir.find(")",lima) 
         limb = cir.find("x",limfa)
         BS = cir[limfa+1:limb]
         limc = cir.find("y",limb)
