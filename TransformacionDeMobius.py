@@ -1,13 +1,8 @@
-
 from gettext import find
 from turtle import color
 import matplotlib.pyplot as plt
 import numpy as np
 from pandas import array
-
-ec1 = []
-ec2 = []
-ec3 = []
 
 
 def numcomp(z1):
@@ -74,9 +69,9 @@ def valoresc(cir):
         k = -1*float(kp)
         rpp = float(rp)
         r = pow(rpp, 0.5)
-        print("h: ",h)
-        print("k: ",k)
-        print("r: ",r)
+        print("h: ", h)
+        print("k: ", k)
+        print("r: ", r)
 
         return h, k, r
     elif(tip != "("):
@@ -146,28 +141,27 @@ def sistemadeecuaciones(p1r, p1i, p2r, p2i, p3r, p3i):
     return hn, kn, rn
 
 
-def resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i) :
-    #ax+bx=c
-    #dx+ex=f
+def resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i):
+    # ax+bx=c
+    # dx+ex=f
     a = (2*p2r)-(2*p1r)
     b = (2*p2i)-(2*p1i)
     c = (pow(p2r, 2)+pow(p2i, 2))-(pow(p1r, 2)+pow(p1i, 2))
-    
+
     d = (2*p3r)-(2*p1r)
     e = (2*p3i)-(2*p1i)
     f = (pow(p3r, 2)+pow(p3i, 2))-(pow(p1r, 2)+pow(p1i, 2))
-    
+
     A = np.array([[a, b], [d, e]])
     B = np.array([c, f])
-    
-    x = np.linalg.pinv(A).dot(B)
-    radio = pow(pow(p1r - x[0], 2) + pow(p1i - x[1], 2) , 0.5)
-    
-    print("nuevoCentro",x)
-    print("nuevoRadio",radio)
-    
-    return x, radio
 
+    x = np.linalg.pinv(A).dot(B)
+    radio = pow(pow(p1r - x[0], 2) + pow(p1i - x[1], 2), 0.5)
+
+    print("nuevoCentro", x)
+    print("nuevoRadio", radio)
+
+    return x, radio
 
 
 def graficar(h, k, r, x1, y1, x2, y2, x3, y3, tit):
@@ -226,4 +220,5 @@ centro, r2 = resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i)
 print(f"(x-{centro[0]})^2+(y-{centro[1]})^2={r2}^2")
 
 graficar(h, k, r, x1, y1, x2, y2, x3, y3, 'Original')
-graficar(centro[0], centro[1], r2, p1r, p1i, p2r, p2i, p3r, p3i, 'Transformada')
+graficar(centro[0], centro[1], r2, p1r, p1i,
+         p2r, p2i, p3r, p3i, 'Transformada')
