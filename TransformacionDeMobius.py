@@ -2,7 +2,6 @@ from gettext import find
 from turtle import color
 import matplotlib.pyplot as plt
 import numpy as np
-from pandas import array
 
 
 def numcomp(z1):
@@ -54,7 +53,7 @@ def division(a, b, a2, b2):
     return div
 
 
-def valoresc(cir):
+def valoresc(cir, r1, i1, r2, i2, r3, i3, r4, i4):
     tip = cir[0:1]
     if(tip == "("):
         hlim = cir.find("x")
@@ -85,18 +84,51 @@ def valoresc(cir):
         limd = cir.find("=", limc)
         DS = cir[limc+1:limd]
         A = float(AS)
-        if (A == 0):
-            print ("No es valido, A debe ser diferente de 0")
-            exit()
         BP = float(BS)
         CP = float(CS)
         DP = float(DS)
+        if (A == 0):
+            print ("No es valido, A debe ser diferente de 0")
+            x=np.arange(-8,8)
+            y=(-BP*x-DP)/CP
+
+            plt.plot(x, y)
+            plt.title("Original",fontsize=15)
+            plt.grid(True)
+            plt.axhline(0,color='k',lw=2)
+            plt.axvline(0,color='k',lw=2)
+            plt.xlabel('Real')
+            plt.ylabel('Imaginario')
+            plt.show()
+
+            p1r,p1i = 0,-DP/CP
+            p2r,p2i = -DP/BP,0
+            p3r,p3i = (p1r+p2r)/2,(p1i+p2i)/2
+            print(f"p1: {p1r},{p1i}")
+            print(f"p2: {p2r},{p2i}")
+            print(f"p3: {p3r},{p3i}")
+
+            res1 = mobius(p1r,p1i,p2r,p2i,p3r,p3i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
+            res2 = mobius(p2r,p2i,p1r,p1i,p3r,p3i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
+            res3 = mobius(p3r,p3i,p2r,p2i,p1r,p1i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
+
+            print(f"p1n: {res1}")
+            print(f"p2n: {res2}")
+            print(f"p3n: {res3}")
+
+            rr1,ri1 = numcomp(res1)
+            rr2,ri2 = numcomp(res2)
+            rr3,ri3 = numcomp(res3)
+
+            hnn,knn, rnn = sistemadeecuaciones(rr1,ri1,rr2,ri2,rr3,ri3)
+
+            graficar(hnn,knn,rnn,rr1,ri1,rr2,ri2,rr3,ri3,'Transformada')
+
+            exit()
+
         B = BP/A
         C = CP/A
         D = DP/A
-        if (D == 0):
-            print ("NO es valido, el radio debe ser diferente de cero")
-            exit()
         h = -B/2
         k = -C/2
         r = (1/2)*(pow(((B*B)+(C*C)-(4*D)), 0.5))
@@ -120,7 +152,7 @@ def obtenerpuntos(h, k, r):
     return x1, y1, x2, y2, x3, y3
 
 
-def mobius(x, y, r1, i1, r2, i2, r3, i3, r4, i4):
+def mobius(x, y, x2, y2, x3, y3, h, k, r, r1, i1, r2, i2, r3, i3, r4, i4):
     
     #ad - bc != 0
     
@@ -135,6 +167,9 @@ def mobius(x, y, r1, i1, r2, i2, r3, i3, r4, i4):
     
     if (banderaR == 0.0 and banderaI == 0.0 ):
         print("No es una transformacion de mobius pues ad - bc = 0")
+        graficar(h, k, r, x, y, x2, y2, x3, y3, 'Original')
+        print("Solo se transforma en un punto")
+        graficapunto(1,0,'Transformada')
         exit()
     else :
         mul = multiplicacion(x, y, r1, i1)
@@ -196,7 +231,7 @@ def graficar(h, k, r, x1, y1, x2, y2, x3, y3, tit):
     ymax = k+r
 
     plt.title(tit)
-    plt.axis([xmin-5, xmax+5, ymin-5, ymax+5])
+    plt.axis([xmin-(r/10), xmax+(r/10), ymin-(r/10), ymax+(r/10)])
 
     plt.scatter(h, k, color="green")
     plt.scatter(x1, y1, color="blue")
@@ -206,9 +241,22 @@ def graficar(h, k, r, x1, y1, x2, y2, x3, y3, tit):
     axes.set_aspect(1)
     axes.add_artist(draw_circle)
 
+    plt.axhline(0,color='k',lw=2)
+    plt.axvline(0,color='k',lw=2)
+
     plt.grid()
     plt.show()
 
+def graficapunto(a,b,tit):
+    plt.title(tit)
+    plt.axis([(a-20), (a+20), (b-20), (b+20)])
+    plt.plot(a, b,'ro')
+    plt.grid(True)
+    plt.axhline(0,color='k',lw=2)
+    plt.axvline(0,color='k',lw=2)
+    plt.xlabel('Real')
+    plt.ylabel('Imaginario')
+    plt.show()
 
 print("Bienvenido al programa sobre las transformacxiones de Mobius\n")
 
@@ -224,15 +272,15 @@ r2, i2 = numcomp(z2)
 r3, i3 = numcomp(z3)
 r4, i4 = numcomp(z4)
 
-h, k, r = valoresc(circunferencia)
+h, k, r = valoresc(circunferencia, r1, i1, r2, i2, r3, i3, r4, i4)
 
 print(f"(x+{h})^2 + (y+{k})^2 = {r}^2")
 
 x1, y1, x2, y2, x3, y3 = obtenerpuntos(h, k, r)
 
-p1 = mobius(x1, y1, r1, i1, r2, i2, r3, i3, r4, i4)
-p2 = mobius(x2, y2, r1, i1, r2, i2, r3, i3, r4, i4)
-p3 = mobius(x3, y3, r1, i1, r2, i2, r3, i3, r4, i4)
+p1 = mobius(x1, y1, x2, y2, x3, y3, h, k, r, r1, i1, r2, i2, r3, i3, r4, i4)
+p2 = mobius(x2, y2, x1, y1, x3, y3, h, k, r, r1, i1, r2, i2, r3, i3, r4, i4)
+p3 = mobius(x3, y3, x1, y1, x2, y2, h, k, r, r1, i1, r2, i2, r3, i3, r4, i4)
 p1r, p1i = numcomp(p1)
 p2r, p2i = numcomp(p2)
 p3r, p3i = numcomp(p3)
