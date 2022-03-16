@@ -85,12 +85,18 @@ def valoresc(cir):
         limd = cir.find("=", limc)
         DS = cir[limc+1:limd]
         A = float(AS)
+        if (A == 0):
+            print ("No es valido, A debe ser diferente de 0")
+            exit()
         BP = float(BS)
         CP = float(CS)
         DP = float(DS)
         B = BP/A
         C = CP/A
         D = DP/A
+        if (D == 0):
+            print ("NO es valido, el radio debe ser diferente de cero")
+            exit()
         h = -B/2
         k = -C/2
         r = (1/2)*(pow(((B*B)+(C*C)-(4*D)), 0.5))
@@ -115,16 +121,32 @@ def obtenerpuntos(h, k, r):
 
 
 def mobius(x, y, r1, i1, r2, i2, r3, i3, r4, i4):
-    mul = multiplicacion(x, y, r1, i1)
-    azr, azi = numcomp(mul)
-    mul2 = multiplicacion(x, y, r3, i3)
-    czr, czi = numcomp(mul2)
-    sum = suma(azr, azi, r2, i2)
-    numeradorr, numeradori = numcomp(sum)
-    sum2 = suma(czr, czi, r4, i4)
-    denominadorr, denominadori = numcomp(sum2)
-    res = division(numeradorr, numeradori, denominadorr, denominadori)
-    return res
+    
+    #ad - bc != 0
+    
+    ad = multiplicacion(r1, i1, r4, i4)
+    adR ,adI =numcomp(ad)
+    
+    bc = multiplicacion(r2, i2, r3, i3)
+    bcR, bcI = numcomp(bc)
+    
+    bandera = resta(adR, adI, bcR, bcI)
+    banderaR, banderaI = numcomp(bandera)
+    
+    if (banderaR == 0.0 and banderaI == 0.0 ):
+        print("No es una transformacion de mobius pues ad - bc = 0")
+        exit()
+    else :
+        mul = multiplicacion(x, y, r1, i1)
+        azr, azi = numcomp(mul)
+        mul2 = multiplicacion(x, y, r3, i3)
+        czr, czi = numcomp(mul2)
+        sum = suma(azr, azi, r2, i2)
+        numeradorr, numeradori = numcomp(sum)
+        sum2 = suma(czr, czi, r4, i4)
+        denominadorr, denominadori = numcomp(sum2)
+        res = division(numeradorr, numeradori, denominadorr, denominadori)
+        return res
 
 
 def sistemadeecuaciones(p1r, p1i, p2r, p2i, p3r, p3i):
@@ -204,7 +226,7 @@ r4, i4 = numcomp(z4)
 
 h, k, r = valoresc(circunferencia)
 
-print(f"(x-{h})^2+(y-{k})^2={r}^2")
+print(f"(x+{h})^2 + (y+{k})^2 = {r}^2")
 
 x1, y1, x2, y2, x3, y3 = obtenerpuntos(h, k, r)
 
@@ -217,8 +239,7 @@ p3r, p3i = numcomp(p3)
 
 centro, r2 = resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i)
 
-print(f"(x-{centro[0]})^2+(y-{centro[1]})^2={r2}^2")
+print(f"(x+{centro[0]})^2 + (y+{centro[1]})^2 = {r2}^2")
 
 graficar(h, k, r, x1, y1, x2, y2, x3, y3, 'Original')
-graficar(centro[0], centro[1], r2, p1r, p1i,
-         p2r, p2i, p3r, p3i, 'Transformada')
+graficar(centro[0], centro[1], r2, p1r, p1i, p2r, p2i, p3r, p3i, 'Transformada')
