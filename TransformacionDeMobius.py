@@ -22,7 +22,7 @@ def numcomp(z1):
         b = float(bb)
         return a, b
     else:
-        print("z1 es invalido")
+        print("Z no es correcto, por favor revise sus datos")
 
 
 def suma(a, b, a2, b2):
@@ -88,41 +88,45 @@ def valoresc(cir, r1, i1, r2, i2, r3, i3, r4, i4):
         CP = float(CS)
         DP = float(DS)
         if (A == 0):
-            print ("No es valido, A debe ser diferente de 0")
-            x=np.arange(-8,8)
-            y=(-BP*x-DP)/CP
+            print("\n----La función insertada es una recta----")
+            x = np.arange(-8, 8)
+            y = (-BP*x-DP)/CP
 
             plt.plot(x, y)
-            plt.title("Original",fontsize=15)
+            plt.title("Funcion original", fontsize=15)
             plt.grid(True)
-            plt.axhline(0,color='k',lw=2)
-            plt.axvline(0,color='k',lw=2)
+            plt.axhline(0, color='green', lw=2)
+            plt.axvline(0, color='green', lw=2)
             plt.xlabel('Real')
             plt.ylabel('Imaginario')
             plt.show()
 
-            p1r,p1i = 0,-DP/CP
-            p2r,p2i = -DP/BP,0
-            p3r,p3i = (p1r+p2r)/2,(p1i+p2i)/2
-            print(f"p1: {p1r},{p1i}")
-            print(f"p2: {p2r},{p2i}")
-            print(f"p3: {p3r},{p3i}")
+            p1r, p1i = 0, -DP/CP #interseca con el el eje y
+            p2r, p2i = -DP/BP, 0 #intersecta con el eje x
+            p3r, p3i = (p1r+p2r)/2, (p1i+p2i)/2 #punto entre las intersecciones
+            print(f"\nIntersección en el eje y: pt1({p1r},{p1i})")
+            print(f"Intersección en el eje x: pt2({p2r},{p2i})")
+            print(f"Punto medio entre los anteriores puntos: pt3({p3r},{p3i})")
 
-            res1 = mobius(p1r,p1i,p2r,p2i,p3r,p3i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
-            res2 = mobius(p2r,p2i,p1r,p1i,p3r,p3i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
-            res3 = mobius(p3r,p3i,p2r,p2i,p1r,p1i,0,0,0,r1, i1, r2, i2, r3, i3, r4, i4)
+            res1 = mobius(p1r, p1i, p2r, p2i, p3r, p3i, 0, 0,
+                          0, r1, i1, r2, i2, r3, i3, r4, i4)
+            res2 = mobius(p2r, p2i, p1r, p1i, p3r, p3i, 0, 0,
+                          0, r1, i1, r2, i2, r3, i3, r4, i4)
+            res3 = mobius(p3r, p3i, p2r, p2i, p1r, p1i, 0, 0,
+                          0, r1, i1, r2, i2, r3, i3, r4, i4)
 
-            print(f"p1n: {res1}")
-            print(f"p2n: {res2}")
-            print(f"p3n: {res3}")
+            print(f"\nPunto pt1 transformado: {res1}")
+            print(f"Punto pt2 transformado: {res2}")
+            print(f"Punto pt3 transformado: {res3}")
 
-            rr1,ri1 = numcomp(res1)
-            rr2,ri2 = numcomp(res2)
-            rr3,ri3 = numcomp(res3)
+            rr1, ri1 = numcomp(res1)
+            rr2, ri2 = numcomp(res2)
+            rr3, ri3 = numcomp(res3)
 
-            hnn,knn, rnn = sistemadeecuaciones(rr1,ri1,rr2,ri2,rr3,ri3)
+            hnn, knn, rnn = sistemadeecuaciones(rr1, ri1, rr2, ri2, rr3, ri3)
 
-            graficar(hnn,knn,rnn,rr1,ri1,rr2,ri2,rr3,ri3,'Transformada')
+            graficar(hnn, knn, rnn, rr1, ri1, rr2,
+                     ri2, rr3, ri3, 'Función Transformada:')
 
             exit()
 
@@ -153,25 +157,25 @@ def obtenerpuntos(h, k, r):
 
 
 def mobius(x, y, x2, y2, x3, y3, h, k, r, r1, i1, r2, i2, r3, i3, r4, i4):
-    
+
     #ad - bc != 0
-    
+
     ad = multiplicacion(r1, i1, r4, i4)
-    adR ,adI =numcomp(ad)
-    
+    adR, adI = numcomp(ad)
+
     bc = multiplicacion(r2, i2, r3, i3)
     bcR, bcI = numcomp(bc)
-    
+
     bandera = resta(adR, adI, bcR, bcI)
     banderaR, banderaI = numcomp(bandera)
-    
-    if (banderaR == 0.0 and banderaI == 0.0 ):
-        print("No es una transformacion de mobius pues ad - bc = 0")
-        graficar(h, k, r, x, y, x2, y2, x3, y3, 'Original')
-        print("Solo se transforma en un punto")
-        graficapunto(1,0,'Transformada')
+
+    if (banderaR == 0.0 and banderaI == 0.0):
+        print("\nLa función ingresada NO es transformacion de mobius pues ad - bc = 0!!!")
+        print("Por lo que solo se transforma a un punto...")
+        graficar(h, k, r, x, y, x2, y2, x3, y3, 'Función Original')
+        graficapunto(1, 0, 'Función Transformada')
         exit()
-    else :
+    else:
         mul = multiplicacion(x, y, r1, i1)
         azr, azi = numcomp(mul)
         mul2 = multiplicacion(x, y, r3, i3)
@@ -193,7 +197,7 @@ def sistemadeecuaciones(p1r, p1i, p2r, p2i, p3r, p3i):
     C2 = (pow(p3r, 2)+pow(p3i, 2))-(pow(p1r, 2)+pow(p1i, 2))
 
     hn = ((C1*B2) - (C2*B1))/((A1*B2)-(A2*B1))
-    kn = ((C1*A2)-(C2*A1))/((B1*A2)-(B2*A1))
+    kn = ((C1*A2) - (C2*A1))/((B1*A2)-(B2*A1))
     rn = pow(pow(p1r-hn, 2) + pow(p1i-kn, 2), 0.5)
     return hn, kn, rn
 
@@ -215,8 +219,8 @@ def resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i):
     x = np.linalg.pinv(A).dot(B)
     radio = pow(pow(p1r - x[0], 2) + pow(p1i - x[1], 2), 0.5)
 
-    print("nuevoCentro", x)
-    print("nuevoRadio", radio)
+    print("\nCentro de la transformación: ", x)
+    print("Radio de la transformación: ", radio)
 
     return x, radio
 
@@ -233,7 +237,7 @@ def graficar(h, k, r, x1, y1, x2, y2, x3, y3, tit):
     plt.title(tit)
     plt.axis([xmin-(r/10), xmax+(r/10), ymin-(r/10), ymax+(r/10)])
 
-    plt.scatter(h, k, color="green")
+    plt.scatter(h, k, color="red")
     plt.scatter(x1, y1, color="blue")
     plt.scatter(x2, y2, color="blue")
     plt.scatter(x3, y3, color="blue")
@@ -241,31 +245,33 @@ def graficar(h, k, r, x1, y1, x2, y2, x3, y3, tit):
     axes.set_aspect(1)
     axes.add_artist(draw_circle)
 
-    plt.axhline(0,color='k',lw=2)
-    plt.axvline(0,color='k',lw=2)
+    plt.axhline(0, color='green', lw=2)
+    plt.axvline(0, color='green', lw=2)
 
     plt.grid()
     plt.show()
 
-def graficapunto(a,b,tit):
+
+def graficapunto(a, b, tit):
     plt.title(tit)
     plt.axis([(a-20), (a+20), (b-20), (b+20)])
-    plt.plot(a, b,'ro')
+    plt.plot(a, b, 'ro')
     plt.grid(True)
-    plt.axhline(0,color='k',lw=2)
-    plt.axvline(0,color='k',lw=2)
+    plt.axhline(0, color='green', lw=2)
+    plt.axvline(0, color='green', lw=2)
     plt.xlabel('Real')
     plt.ylabel('Imaginario')
     plt.show()
 
-print("Bienvenido al programa sobre las transformacxiones de Mobius\n")
 
-z1 = input("Ingresa el primer numero complejo: ")
+print("-----BIENVENDIO A LA CALCULADORA DE TRANSFORMACION DE MOBIUS-----\n")
+
+z1 = input("Por favor, ingresa el primer numero complejo: ")
 z2 = input("Ingresa el segundo numero complejo: ")
 z3 = input("Ingresa el tercer numero complejo: ")
 z4 = input("Ingresa el cuarto numero complejo: ")
 
-circunferencia = input("Ingrese la ecuación de la circunferencia :")
+circunferencia = input("Ingrese su ecuación de la circunferencia:")
 
 r1, i1 = numcomp(z1)
 r2, i2 = numcomp(z2)
@@ -274,7 +280,8 @@ r4, i4 = numcomp(z4)
 
 h, k, r = valoresc(circunferencia, r1, i1, r2, i2, r3, i3, r4, i4)
 
-print(f"(x+{h})^2 + (y+{k})^2 = {r}^2")
+print("\nUsted ingreso: \n")
+print(f"(x + {h})^2 + (y + {k})^2 = {r}^2")
 
 x1, y1, x2, y2, x3, y3 = obtenerpuntos(h, k, r)
 
@@ -287,7 +294,9 @@ p3r, p3i = numcomp(p3)
 
 centro, r2 = resolverSistema(p1r, p1i, p2r, p2i, p3r, p3i)
 
-print(f"(x+{centro[0]})^2 + (y+{centro[1]})^2 = {r2}^2")
+print("\nLa nueva ecuación de la transformacion es:\n ")
+print(f"(x + {centro[0]})^2 + (y + {centro[1]})^2 = {r2}^2")
 
-graficar(h, k, r, x1, y1, x2, y2, x3, y3, 'Original')
-graficar(centro[0], centro[1], r2, p1r, p1i, p2r, p2i, p3r, p3i, 'Transformada')
+graficar(h, k, r, x1, y1, x2, y2, x3, y3, 'Función Original')
+graficar(centro[0], centro[1], r2, p1r, p1i,
+         p2r, p2i, p3r, p3i, 'Función Transformada')
