@@ -262,7 +262,22 @@ def graficapunto(a, b, tit):
     plt.xlabel('Real')
     plt.ylabel('Imaginario')
     plt.show()
+    
+def graficarFuncion () :
+    x = np.linspace(-10, 10, 50)
+    y = ((x) ** 2)
+    
+    plt.xlabel('Real')
+    plt.ylabel('Imaginario')
+    plt.plot(x, y)
+    plt.axhline(0, color='green', lw=2)
+    plt.axvline(0, color='green', lw=2)
+    plt.grid(True)
+    plt.show();
+    
+    
 
+graficarFuncion();
 
 print("-----BIENVENDIO A LA CALCULADORA DE TRANSFORMACION DE MOBIUS-----\n")
 
